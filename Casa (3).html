@@ -1,351 +1,79 @@
-<!DOCTYPE html>
+</html><!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progresso da Compra</title>
-    <style>
-        /* Estilo da barra de progresso */
-        .progress-container {
-            width: 100%;
-            background-color: #f3f3f3;
-            border-radius: 25px;
-            margin: 20px 0;
-        }
-
-        .progress-bar {
-            height: 30px;
-            width: 0;
-            background-color: #4caf50;
-            border-radius: 25px;
-            text-align: center;
-            color: white;
-            line-height: 30px;
-            transition: width 0.4s ease;
-        }
-
-        .progress-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 5px;
-        }
-
-        /* Estilo do formulário */
-        form {
-            margin-bottom: 20px;
-        }
-
-        label {
-            margin-right: 10px;
-        }
-
-        input[type="text"], input[type="date"], input[type="file"] {
-            padding: 5px;
-            margin-right: 10px;
-        }
-
-        input[type="submit"] {
-            padding: 5px 15px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        /* Estilo da tabela */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #4caf50;
-            color: white;
-        }
-
-        /* Estilo para a visualização do recibo */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .lightbox img {
-            max-width: 80%;
-            max-height: 80%;
-            transition: transform 0.3s ease;
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
-        }
-
-        /* Estilo para a seção de valores pagos e a pagar */
-        .amount-info {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            background-color: #f3f3f3;
-            padding: 20px;
-            border-radius: 10px;
-            color: #333;
-        }
-
-        .amount-info div {
-            text-align: center;
-            flex: 1;
-        }
-
-        .amount-info div:not(:last-child) {
-            border-right: 2px solid #ddd;
-        }
-
-        .amount-info div span {
-            display: block;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #4caf50;
-        }
-
-        /* Estilo do botão de restauração */
-        #reset-btn {
-            background-color: red;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        /* Estilo do cabeçalho com a imagem */
-        .header-image {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .header-image img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progresso da Compra</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-    <!-- Cabeçalho com a imagem -->
-    <div class="header-image">
-        <img src="https://drive.google.com/uc?export=view&id=1D3jJyHq1xWcylyiyN6VdS__yN0rIz2MQ" alt="Progresso da Compra">
+  <!-- Cabeçalho com a imagem -->
+  <div class="header-image">
+    <img src="https://drive.google.com/uc?export=view&id=1D3jJyHq1xWcylyiyN6VdS__yN0rIz2MQ" alt="Progresso da Compra">
+  </div>
+
+  <!-- Barra de Progresso -->
+  <div class="progress-container">
+    <div id="progress-bar" class="progress-bar">0%</div>
+  </div>
+  <div class="progress-labels">
+    <span>R$ 0</span>
+    <span>R$ 60.000</span>
+  </div>
+
+  <!-- Seção de Valores Pagos e a Pagar -->
+  <div class="amount-info">
+    <div>
+      <label>Total Pago</label>
+      <span id="total-paid">R$ 0,00</span>
     </div>
-
-    <!-- Barra de Progresso -->
-    <div class="progress-container">
-        <div id="progress-bar" class="progress-bar">0%</div>
+    <div>
+      <label>Restante a Pagar</label>
+      <span id="remaining-amount">R$ 60.000,00</span>
     </div>
-    <div class="progress-labels">
-        <span>R$ 0</span>
-        <span>R$ 60.000</span>
-    </div>
+  </div>
 
-    <!-- Seção de Valores Pagos e a Pagar -->
-    <div class="amount-info">
-        <div>
-            <label>Total Pago</label>
-            <span id="total-paid">R$ 0,00</span>
-        </div>
-        <div>
-            <label>Restante a Pagar</label>
-            <span id="remaining-amount">R$ 60.000,00</span>
-        </div>
-    </div>
+  <!-- Formulário para Adicionar Valor -->
+  <form id="value-form">
+    <label for="value">Valor (R$):</label>
+    <input type="text" id="value" name="value" required>
 
-    <!-- Formulário para Adicionar Valor -->
-    <form id="value-form">
-        <label for="value">Valor (R$):</label>
-        <input type="text" id="value" name="value" required>
+    <label for="date">Data:</label>
+    <input type="date" id="date" name="date" required>
 
-        <label for="date">Data:</label>
-        <input type="date" id="date" name="date" required>
+    <label for="receipt">Recibo (imagem):</label>
+    <input type="file" id="receipt" name="receipt" accept="image/*">
 
-        <label for="receipt">Recibo (imagem):</label>
-        <input type="file" id="receipt" name="receipt" accept="image/*">
+    <input type="submit" value="Adicionar">
+  </form>
 
-        <input type="submit" value="Adicionar">
-    </form>
+  <!-- Tabela de Valores -->
+  <table>
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Valor (R$)</th>
+        <th>Recibo</th>
+      </tr>
+    </thead>
+    <tbody id="value-table">
+      <!-- As entradas serão adicionadas aqui -->
+    </tbody>
+  </table>
 
-    <!-- Tabela de Valores -->
-    <table>
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Valor (R$)</th>
-                <th>Recibo</th>
-            </tr>
-        </thead>
-        <tbody id="value-table">
-            <!-- As entradas serão adicionadas aqui -->
-        </tbody>
-    </table>
+  <!-- Visualização do Recibo -->
+  <div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-image" src="" alt="Recibo">
+  </div>
 
-    <!-- Visualização do Recibo -->
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <img id="lightbox-image" src="" alt="Recibo">
-    </div>
+  <!-- Botão para Restaurar o Site -->
+  <button id="reset-btn">Restaurar Site</button>
 
-    <!-- Botão para Restaurar o Site -->
-    <button id="reset-btn">Restaurar Site</button>
-
-    <script>
-        const maxAmount = 60000;
-        const correctPassword = '3215'; // Senha para restauração
-        let total = parseFloat(localStorage.getItem('totalPaid')) || 0;
-
-        document.addEventListener("DOMContentLoaded", function() {
-            loadData();
-            updateProgressBar();
-            updateAmountInfo();
-        });
-
-        function updateProgressBar() {
-            const progressBar = document.getElementById('progress-bar');
-            const progress = Math.min((total / maxAmount) * 100, 100);
-            progressBar.style.width = progress + '%';
-            progressBar.textContent = Math.round(progress) + '%';
-        }
-
-        function updateAmountInfo() {
-            const totalPaid = document.getElementById('total-paid');
-            const remainingAmount = document.getElementById('remaining-amount');
-
-            totalPaid.textContent = `R$ ${total.toFixed(2)}`;
-            remainingAmount.textContent = `R$ ${(maxAmount - total).toFixed(2)}`;
-        }
-
-        function saveData(date, value, receiptPath) {
-            let payments = JSON.parse(localStorage.getItem('payments')) || [];
-            payments.push({ date, value, receiptPath });
-            localStorage.setItem('payments', JSON.stringify(payments));
-            localStorage.setItem('totalPaid', total.toFixed(2));
-        }
-
-        function loadData() {
-            let payments = JSON.parse(localStorage.getItem('payments')) || [];
-            payments.forEach(payment => {
-                addTableRow(payment.date, payment.value, payment.receiptPath);
-            });
-        }
-
-        function addTableRow(date, value, receiptPath) {
-            const table = document.getElementById('value-table');
-            const row = table.insertRow();
-
-            const cellDate = row.insertCell(0);
-            cellDate.textContent = formatDate(date);
-
-            const cellValue = row.insertCell(1);
-            cellValue.textContent = `R$ ${parseFloat(value).toFixed(2)}`;
-
-            const cellReceipt = row.insertCell(2);
-            if (receiptPath) {
-                const img = document.createElement('img');
-                img.src = receiptPath;
-                img.style.maxWidth = '100px';
-                img.style.cursor = 'pointer';
-                img.addEventListener('click', () => openLightbox(receiptPath));
-                cellReceipt.appendChild(img);
-            } else {
-                cellReceipt.textContent = 'Nenhum recibo';
-            }
-        }
-
-        function formatDate(dateString) {
-            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-            return new Date(dateString).toLocaleDateString('pt-BR', options);
-        }
-
-        function openLightbox(imageSrc) {
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImage = document.getElementById('lightbox-image');
-            lightboxImage.src = imageSrc;
-            lightbox.style.display = 'flex';
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
-            document.getElementById('lightbox-image').src = '';
-        }
-
-        function convertToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        document.getElementById('value-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const value = parseFloat(document.getElementById('value').value);
-            const date = document.getElementById('date').value;
-            const receipt = document.getElementById('receipt').files[0];
-
-            if (isNaN(value) || !date) {
-                alert('Por favor, insira um valor válido e uma data.');
-                return;
-            }
-
-            total += value;
-            updateProgressBar();
-            updateAmountInfo();
-
-            let receiptPath = '';
-            if (receipt) {
-                receiptPath = await convertToBase64(receipt);
-            }
-
-            addTableRow(date, value, receiptPath);
-            saveData(date, value, receiptPath);
-
-            document.getElementById('value-form').reset();
-        });
-
-        document.getElementById('reset-btn').addEventListener('click', function() {
-            const password = prompt('Digite a senha para restaurar o site:');
-            if (password === correctPassword) {
-                if (confirm('Tem certeza de que deseja restaurar o site? Todos os dados serão perdidos.')) {
-                    localStorage.clear();
-                    location.reload();
-                }
-            } else {
-                alert('Senha incorreta.');
-            }
-        });
-
-        document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-    </script>
+  <script src="script.js"></script>
 </body>
+
 </html>
